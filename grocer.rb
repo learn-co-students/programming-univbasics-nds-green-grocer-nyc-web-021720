@@ -41,9 +41,6 @@ end
 
 #
 def apply_coupons(cart, coupons)
-  # Consult README for inputs and outputs
-  #
-  # REMEMBER: This method **should** update cart
   coupons.each do |coupon|
     matching_item = find_item_by_name_in_collection(coupon[:item], cart)
     if matching_item then
@@ -78,16 +75,6 @@ end
 
 #
 def checkout(cart, coupons)
-  # Consult README for inputs and outputs
-  #
-  # This method should call
-  # * consolidate_cart
-  # * apply_coupons
-  # * apply_clearance
-  #
-  # BEFORE it begins the work of calculating the total (or else you might have
-  # some irritated customers
-  
   consolidated = consolidate_cart(cart)
   apply_coupons(consolidated, coupons)
   apply_clearance(consolidated)
