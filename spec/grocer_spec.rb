@@ -163,8 +163,6 @@ describe "Grocer" do
 
         coupon_applied_cart = apply_coupons(consolidated_cart, test_coupons)
         
-        puts "coupon applied cart #{coupon_applied_cart}"
-
         cheese = find_item_by_name_in_collection("CHEESE", coupon_applied_cart)
         cheese_wc = find_item_by_name_in_collection("CHEESE W/COUPON", coupon_applied_cart)
         avocado = find_item_by_name_in_collection("AVOCADO", coupon_applied_cart)
