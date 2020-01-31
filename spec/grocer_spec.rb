@@ -1,4 +1,3 @@
-require "pry"
 
 describe "Grocer" do
   # let() is like a global variable for tests
