@@ -62,18 +62,18 @@ def apply_coupons(cart, coupons)
     cart_item_couponed = find_item_by_name_in_collection(item_name_couponed, cart)
 
     if cart_item && cart_item[:count] >= coupons[i][:num] # amount of item within coupons
-      if cart_item_couponed
+      if cart_item_couponed # increases coupons count when it already exists
         cart_item_couponed[:count] += coupons[i][:num] # increase it by the number of items on our coupons
         cart_item[:count] -= coupons[i][:num] # moves this out of cart_item into couponed so need to subtract it from there
       else
         cart_item_couponed = {
           :item => item_name_couponed,
-          :price => coupons[i][:cost] / coupons[i][:num],
-          :clearance => cart_item[:clearance],
-          :count => coupons[i][:num]
-        }
-        cart << cart_item_couponed
-        cart_item[:count] -= coupons[i][:num]
+          :price => coupons[i][:cost] / coupons[i][:num],  #TEST adds the coupon price to the property hash of couponed item
+          :clearance => cart_item[:clearance], 
+          :count => coupons[i][:num] #TEST adds the count number to the property hash of couponed item
+        } # adds a new key, value pair to the cart hash called 'ITEM NAME W/COUPON'
+        cart << cart_item_couponed #TEST  remembers if the item was on clearance
+        cart_item[:count] -= coupons[i][:num] #TEST removes the number of discounted items from the original item's count
       end
     end
 
@@ -86,19 +86,42 @@ end
 # rspec spec/grocer_spec.rb -e apply_coupons
 
 def apply_clearance(cart)
-  # Consult README for inputs and outputs
-  #
-  # REMEMBER: This method **should** update cart
+  i = 0
+  while i < cart.length
+    if cart[i][:clearance] # iterates over the clearance key
+      cart[i][:price]  = (cart[i][:price] - (cart[i][:price] * 0.20)).round(2) # calculates clearance price
+    end
+    i += 1
+  end
+  cart # returns updated cart
 end
 
+
+
 def checkout(cart, coupons)
-  # Consult README for inputs and outputs
-  #
-  # This method should call
-  # * consolidate_cart
-  # * apply_coupons
-  # * apply_clearance
-  #
-  # BEFORE it begins the work of calculating the total (or else you might have
-  # some irritated customers
+  consolidated_cart = consolidate_cart(cart) # calls on #consolidate_cart before calculating the total for one item
+  couponed_cart = apply_coupons(consolidated_cart, coupons) # calls on #apply_coupons based on what's in coupons
+  final_cart = apply_clearance(couponed_cart) # calls on #consolidate_cart before calculating the total
+
+  total = 0
+
+  i = 0
+  while i < final_cart.length
+    total += final_cart[i][:price] * final_cart[i][:count] # calculates total price * count
+    i += 1
+  end
+  if total > 100
+    total -= (total * 0.10) # applies 10% discount
+  end
+  total
 end
+
+# Consult README for inputs and outputs
+#
+# This method should call
+# * consolidate_cart
+# * apply_coupons
+# * apply_clearance
+#
+# BEFORE it begins the work of calculating the total (or else you might have
+# some irritated customers
