@@ -1,21 +1,73 @@
+require 'pry'
 def find_item_by_name_in_collection(name, collection)
-  # Implement me first!
-  #
-  # Consult README for inputs and outputs
+  # collection => [{:item=>"DOG FOOD"}, {:item=>"WINE"}, {:item=>"STRYCHNINE"}] name => WINE
+  item_index = 0
+  while item_index < collection.size
+    product = collection[item_index]
+    if product[:item] == name
+      return product
+    end
+
+  item_index += 1
+  end
+
 end
 
 def consolidate_cart(cart)
+#   # cart => [ {:item=>"TEMPEH", :price=>3.0, :clearance=>true},
+#  {:item=>"PEANUTBUTTER", :price=>3.0, :clearance=>true},
+#  {:item=>"ALMONDS", :price=>9.0, :clearance=>false} ]
+
+  new_cart = []
+
+  cart_index = 0
+  while cart_index < cart.size
+    item_name = cart[cart_index][:item]
+    new_cart_item = find_item_by_name_in_collection(item_name, new_cart)
+    # check for whatever item we are looking at using our cart_index
+    # in the cart inside of our new cart
+    # if this doesn't find the new item in the cart then it returns nil
+
+    if new_cart_item != nil # if variable has a truthy value
+      new_cart_item[:count] += 1
+    else # if this doesn't exist yet you need to create a whole new item {}
+      new_cart_item = {
+        item: cart[cart_index][:item],
+        price: cart[cart_index][:price],
+        clearance: cart[cart_index][:clearance],
+        count: 1
+      }
+      new_cart << new_cart_item
+    end
+
+    cart_index += 1
+
+  end
+
+  new_cart
+end
   # Consult README for inputs and outputs
   #
   # REMEMBER: This returns a new Array that represents the cart. Don't merely
   # change `cart` (i.e. mutate) it. It's easier to return a new thing.
-end
+
 
 def apply_coupons(cart, coupons)
+  i = 0
+  while i < coupons.length
+
+    i += 1
+  end
+
+
+
   # Consult README for inputs and outputs
   #
   # REMEMBER: This method **should** update cart
 end
+# cart => [{:item=>"AVOCADO", :price=>3.0, :clearance=>true, :count=>2}]
+# coupons => [{:item=>"AVOCADO", :num=>2, :cost=>5.0}]
+# rspec spec/grocer_spec.rb -e apply_coupons
 
 def apply_clearance(cart)
   # Consult README for inputs and outputs
