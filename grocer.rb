@@ -10,7 +10,6 @@ def find_item_by_name_in_collection(name, collection)
       return collection[counter]
     end
     counter += 1
-    end
   end
 end
 
@@ -25,11 +24,12 @@ def consolidate_cart(cart)
     new_cart_item = find_item_by_name_in_collection(cart[counter][:item], new_cart)
     if new_cart_item != nil
       new_cart_item[:count] += 1
+      # binding.pry
     else
       new_cart_item = {
         :item => cart[counter][:item],
         :price => cart[counter][:price],
-        :clearence => cart[counter][:clearence],
+        :clearance => cart[counter][:clearance],
         :count => 1
       }
       new_cart << new_cart_item
@@ -72,6 +72,14 @@ def apply_clearance(cart)
   # Consult README for inputs and outputs
   #
   # REMEMBER: This method **should** update cart
+  counter = 0
+  while counter < cart.length
+    if cart[counter][:clearance]
+      cart[counter][:price] = (cart[counter][:price] - (cart[counter][:price] * 0.20)).round(2)
+    end
+    counter += 1
+  end
+  cart
 end
 
 def checkout(cart, coupons)
@@ -84,4 +92,17 @@ def checkout(cart, coupons)
   #
   # BEFORE it begins the work of calculating the total (or else you might have
   # some irritated customers
+  consolidate_cart = consolidate_cart(cart)
+  couponed_cart = apply_coupons(consolidate_cart, coupons)
+  final_cart = apply_clearance(couponed_cart)
+  total = 0
+  counter = 0
+  while counter < final_cart.length
+    total += final_cart[counter][:price] * final_cart[counter][:count]
+    counter += 1
+  end
+  if total > 100
+    total -= (total * 0.10)
+  end
+  total
 end
