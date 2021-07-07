@@ -1,0 +1,52 @@
+ name_iteamwithcoupon = iteam_withcopon[:item] 
+  iteam_withcopon[:clearance] = true
+ price_iteamwithcoupon = coupons[row_index][:cost]
+ 
+ number_iteamwithcoupon = iteam_withcopon[:num]
+ 
+ iteam_withcopon[:price] = price_iteamwithcoupon /  number_iteamwithcoupon
+ 
+ iteam_withcopon[:count] = number_iteamwithcoupon
+ 
+ iteam_withcopon.delete(:cost)
+ iteam_withcopon.delete(:num)
+ new_array << iteam_withcopon
+ 
+
+ if same_iteamwithcoupion
+   new_array << same_iteamwithcoupion
+
+   
+
+else
+   iteam_withcopon =  [{:item =>iteam_withcopon[:item] ,
+  :price => price_iteamwithcoupon /  number_iteamwithcoupon ,
+  :clearance => iteam_withcopon[:clearance] ,
+  :count => iteam_withcopon[:count]}]
+ end
+end
+  
+ 
+ 
+ 
+
+   
+  
+  row_index += 1
+end
+
+if new_array == []
+  new_array << cart
+end
+
+
+
+
+
+
+
+
+
+
+
+
